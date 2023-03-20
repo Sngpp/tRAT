@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Question {{ current_question_index + 1 }} of {{ total_questions }}</h1>
+    <h2>{{ question }}</h2>
+    <form method="post">
+        {% for option_index, option in enumerate(options) %}
+        <label{% if feedback and option_index == question['answer_index'] %} class="correct"{% elif feedback and option_index == int(request.form['answer']) %} class="incorrect"{% endif %}>
+            <input type="radio" name="answer" value="{{ option_index }}"{% if feedback and option_index == question['answer_index'] %} checked{% endif %}>
+            {{ option }}
+        </label>
+        {% endfor %}
+        <p>{{ feedback }}</p>
+        <p>{{ score_message }}</p>
+        {% if next_question_index is not none %}
+        <button type="submit">Next Question</button>
+        {% else %}
+        <a href="score.html">See Your Score</a>
+        {% endif %}
+    </form>
+</body>
+</html>
